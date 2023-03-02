@@ -8,7 +8,7 @@ class BeersLocalDataSource {
     _init();
   }
 
-  _init() async  {
+  Future<void> _init() async  {
     _local = await $FloorBeersDataBase
         .databaseBuilder('app_database.db')
         .build();
