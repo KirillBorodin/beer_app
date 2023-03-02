@@ -13,25 +13,29 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  final db =
+  final local =
       await $FloorBeersDataBase.databaseBuilder('app_database.db').build();
-  runApp(BeerApp(db: db));
+  final remote = BeersApi(Dio());
+  runApp(BeerApp(local: local, remote: remote));
 }
 
 class BeerApp extends StatelessWidget {
-  final BeersDataBase db;
+  final BeersDataBase local;
+  final BeersApi remote;
 
-  const BeerApp({Key? key, required this.db}) : super(key: key);
+  const BeerApp({
+    required this.local,
+    required this.remote,
+    Key? key,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: MultiBlocProvider(
         providers: [
-          RepositoryProvider(create: (context) => BeersLocalDataSource(db)),
-          RepositoryProvider(
-            create: (context) => BeersRemoteDataSource(BeersApi(Dio())),
-          ),
+          RepositoryProvider(create: (context) => BeersLocalDataSource(local)),
+          RepositoryProvider(create: (context) => BeersRemoteDataSource(remote))
         ],
         child: RepositoryProvider(
           create: (BuildContext context) {
