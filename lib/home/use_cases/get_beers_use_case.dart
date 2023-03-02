@@ -1,12 +1,12 @@
 import 'package:beer_app/home/business_objects/beer.dart';
 import 'package:beer_app/home/repositories/beers_repository.dart';
 
-class FetchBeersUseCase {
+class GetBeersUseCase {
   final BeersRepository _repository;
 
-  const FetchBeersUseCase(this._repository);
+  const GetBeersUseCase(this._repository);
 
-  Future<void> call() {
-    return _repository.fetchBeers();
+  Stream<List<Beer>> call() {
+    return _repository.getBeers();
   }
 }

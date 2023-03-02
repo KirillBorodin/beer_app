@@ -10,7 +10,7 @@ abstract class BeerDao {
   Future<void> deleteBeers();
 
   @Query('SELECT * FROM beer')
-  Future<List<BeerEntity>> getBeers();
+  Stream<List<BeerEntity>> getBeers();
 
   @transaction
   Future<void> updateBeers(List<BeerEntity> beers) async {

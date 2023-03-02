@@ -103,7 +103,7 @@ class _$BeerDao extends BeerDao {
   _$BeerDao(
     this.database,
     this.changeListener,
-  )   : _queryAdapter = QueryAdapter(database),
+  )   : _queryAdapter = QueryAdapter(database, changeListener),
         _beerEntityInsertionAdapter = InsertionAdapter(
             database,
             'beer',
@@ -112,7 +112,8 @@ class _$BeerDao extends BeerDao {
                   'name': item.name,
                   'first_brewed': item.description,
                   'image_url': item.imageUrl
-                });
+                },
+            changeListener);
 
   final sqflite.DatabaseExecutor database;
 
@@ -128,13 +129,15 @@ class _$BeerDao extends BeerDao {
   }
 
   @override
-  Future<List<BeerEntity>> getBeers() async {
-    return _queryAdapter.queryList('SELECT * FROM beer',
+  Stream<List<BeerEntity>> getBeers() {
+    return _queryAdapter.queryListStream('SELECT * FROM beer',
         mapper: (Map<String, Object?> row) => BeerEntity(
             id: row['id'] as int,
             name: row['name'] as String,
             description: row['first_brewed'] as String,
-            imageUrl: row['image_url'] as String));
+            imageUrl: row['image_url'] as String),
+        queryableName: 'beer',
+        isView: false);
   }
 
   @override

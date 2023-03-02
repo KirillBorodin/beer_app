@@ -10,10 +10,14 @@ class BeersRepository {
 
   const BeersRepository(this._remote, this._local);
 
-  Future<List<Beer>> getBeers() async {
+  Future<void> fetchBeers() async {
     final dtos = await _remote.fetchBeers();
     await _local.updateBeers(dtos.map((dto) => dto.toEntity()).toList());
-    final entities = await _local.getBeers();
-    return entities.map((entity) => entity.toBo()).toList();
+  }
+
+  Stream<List<Beer>> getBeers() {
+    return _local
+        .getBeers()
+        .map((entities) => entities.map((entity) => entity.toBo()).toList());
   }
 }
