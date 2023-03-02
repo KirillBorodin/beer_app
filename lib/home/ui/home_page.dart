@@ -8,15 +8,20 @@ class HomePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: BlocBuilder<BeersCubit, BeersState>(
-        builder: (context, state) {
-          if (state.isLoading) {
-            return const _ProgressBar();
-          }
+    return SafeArea(
+      child: RefreshIndicator(
+        onRefresh: context.read<BeersCubit>().fetchBeers,
+        child: Scaffold(
+          body: BlocBuilder<BeersCubit, BeersState>(
+            builder: (context, state) {
+              if (state.isLoading) {
+                return const _ProgressBar();
+              }
 
-          return _BeersList(beers: state.beers);
-        },
+              return _BeersList(beers: state.beers);
+            },
+          ),
+        ),
       ),
     );
   }
@@ -44,6 +49,7 @@ class _BeersList extends StatelessWidget {
     return ListView.separated(
       itemCount: beers.length,
       shrinkWrap: true,
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       itemBuilder: (context, index) {
         return _BeerItem(beer: beers[index]);
       },

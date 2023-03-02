@@ -13,7 +13,7 @@ class BeersCubit extends Cubit<BeersState> {
     this._fetchBeersUseCase,
     this._getBeersUseCase,
   ) : super(const BeersState()) {
-    _fetchBeers();
+    fetchBeers();
     _listenBeers();
   }
 
@@ -22,7 +22,7 @@ class BeersCubit extends Cubit<BeersState> {
 
   StreamSubscription<List<Beer>>? _beersSubscription;
 
-  Future<void> _fetchBeers() async {
+  Future<void> fetchBeers() async {
     emit(state.copyWith(isLoading: true));
     await _fetchBeersUseCase();
     emit(state.copyWith(isLoading: false));
