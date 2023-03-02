@@ -2,7 +2,7 @@ import 'package:beer_app/home/data_sources/local/db/beers_database.dart';
 import 'package:beer_app/home/data_sources/local/db/entity/beer_entity.dart';
 
 class BeersLocalDataSource {
-  BeersLocalDataSource(this._local);
+  const BeersLocalDataSource(this._local);
 
   final BeersDataBase _local;
 
