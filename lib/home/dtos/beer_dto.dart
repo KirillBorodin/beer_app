@@ -1,4 +1,4 @@
-import 'package:beer_app/home/business_objects/beer.dart';
+import 'package:beer_app/home/data_sources/local/db/entity/beer_entity.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 
 part 'beer_dto.freezed.dart';
@@ -18,8 +18,8 @@ class BeerDto with _$BeerDto {
 }
 
 extension BeerDtoExtension on BeerDto {
-  Beer toBo() {
-    return Beer(
+  BeerEntity toEntity() {
+    return BeerEntity(
       id: id,
       name: name,
       description: description,

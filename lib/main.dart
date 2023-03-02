@@ -1,4 +1,5 @@
 import 'package:beer_app/home/cubit/beers_cubit.dart';
+import 'package:beer_app/home/data_sources/local/beers_local_data_source.dart';
 import 'package:beer_app/home/data_sources/remote/api/beers_api.dart';
 import 'package:beer_app/home/data_sources/remote/beers_remote_data_source.dart';
 import 'package:beer_app/home/repositories/beers_repository.dart';
@@ -18,13 +19,19 @@ class BeerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: RepositoryProvider(
-        create: (BuildContext context) {
-          return BeersRemoteDataSource(BeersApi(Dio()));
-        },
+      home: MultiBlocProvider(
+        providers: [
+          RepositoryProvider(create: (context) => BeersLocalDataSource()),
+          RepositoryProvider(
+            create: (context) => BeersRemoteDataSource(BeersApi(Dio())),
+          ),
+        ],
         child: RepositoryProvider(
           create: (BuildContext context) {
-            return BeersRepository(context.read());
+            return BeersRepository(
+              context.read(),
+              context.read(),
+            );
           },
           child: BlocProvider(
             create: (context) => BeersCubit(FetchBeersUseCase(context.read())),

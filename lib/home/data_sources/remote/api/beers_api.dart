@@ -1,5 +1,5 @@
 
-import 'package:beer_app/home/data_sources/remote/endpoints.dart';
+import 'package:beer_app/home/data_sources/remote/api/endpoints.dart';
 import 'package:beer_app/home/dtos/beer_dto.dart';
 import 'package:dio/dio.dart';
 import 'package:retrofit/retrofit.dart';
