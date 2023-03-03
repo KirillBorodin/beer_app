@@ -12,6 +12,9 @@ class HomePage extends StatelessWidget {
       child: RefreshIndicator(
         onRefresh: context.read<BeersCubit>().fetchBeers,
         child: Scaffold(
+          appBar: AppBar(
+            title: const Text('Beer App'),
+          ),
           body: BlocBuilder<BeersCubit, BeersState>(
             builder: (context, state) {
               if (state.isLoading) {

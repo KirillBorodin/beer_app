@@ -1,3 +1,4 @@
+import 'package:beer_app/color_schemes.g.dart';
 import 'package:beer_app/home/cubit/beers_cubit.dart';
 import 'package:beer_app/home/data_sources/local/beers_local_data_source.dart';
 import 'package:beer_app/home/data_sources/local/db/beers_database.dart';
@@ -32,25 +33,29 @@ class BeerApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(colorScheme: lightColorScheme),
+      darkTheme: ThemeData(colorScheme: darkColorScheme),
       home: MultiBlocProvider(
         providers: [
-          RepositoryProvider(create: (context) => BeersLocalDataSource(local)),
-          RepositoryProvider(create: (context) => BeersRemoteDataSource(remote))
-        ],
-        child: RepositoryProvider(
-          create: (BuildContext context) {
-            return BeersRepository(
-              context.read(),
-              context.read(),
-            );
-          },
-          child: BlocProvider(
-            create: (context) => BeersCubit(
-              FetchBeersUseCase(context.read()),
-              GetBeersUseCase(context.read()),
-            ),
-            child: const HomePage(),
+          RepositoryProvider(
+            create: (context) => BeersLocalDataSource(local),
           ),
+          RepositoryProvider(
+            create: (context) => BeersRemoteDataSource(remote),
+          ),
+          RepositoryProvider(
+            create: (context) => BeersRepository(
+              context.read(),
+              context.read(),
+            ),
+          ),
+        ],
+        child: BlocProvider(
+          create: (context) => BeersCubit(
+            FetchBeersUseCase(context.read()),
+            GetBeersUseCase(context.read()),
+          ),
+          child: const HomePage(),
         ),
       ),
     );
